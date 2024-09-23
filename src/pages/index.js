@@ -1,0 +1,13 @@
+export { default as Home } from "./Home";
+export { default as B2b } from "./B2b";
+export { default as Career } from "./Career";
+export { default as Contact } from "./Contact";
+export { default as AboutUs } from "./Corporate/AboutUs";
+export { default as History } from "./Corporate/History";
+export { default as Iss } from "./Corporate/Iss";
+export { default as Pds } from "./Corporate/Pds";
+export { default as Documents } from "./Documents";
+export { default as DopSearch } from "./DopSearch";
+export { default as Categories } from "./Categories";
+export { default as Products } from "./Products";
+export { default as ProductDetail } from "./ProductDetail";

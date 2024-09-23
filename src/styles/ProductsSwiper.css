@@ -1,0 +1,18 @@
+.productSwiper {
+  box-shadow: none;
+  width: 100%;
+}
+
+.productSwiper .swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+}
+
+.productSwiper .swiper-slide img {
+  display: block;
+  width: 100%;
+}
+.productSwiper article {
+  box-shadow: none;
+}

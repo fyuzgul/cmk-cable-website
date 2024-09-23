@@ -1,0 +1,50 @@
+.certificateSwiper {
+  position: relative;
+  overflow: hidden; /* İçeriğin dışarı taşmasını engeller */
+  padding-bottom: 40px; /* Pagination'ı aşağıda tutmak için padding */
+}
+
+.certificateSwiper .swiper {
+  width: 100%;
+  height: auto; /* Yüksekliği otomatik ayarlamak */
+}
+
+.certificateSwiper .swiper-wrapper {
+  display: flex;
+  justify-content: flex-start; /* İlk slide'ın tam görünmesini sağlar */
+}
+
+.certificateSwiper .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  width: 200px; /* Kart genişliği */
+  height: 150px; /* Kart yüksekliği */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.certificateSwiper .swiper-slide img {
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.certificateSwiper .swiper-pagination {
+  position: absolute; /* Pagination'ı konumlandırmak için pozisyonlama kullanılır */
+  bottom: 10px; /* Pagination'ı en alta yerleştirmek için */
+  left: 50%; /* Pagination'ı yatayda ortalamak için */
+  transform: translateX(-50%); /* Pagination'ı yatayda tam ortalamak için */
+  z-index: 10; /* Pagination'ı diğer elemanların üzerinde tutmak için */
+}
+
+.certificateSwiper .swiper-pagination-bullet {
+  background: #000; /* Pagination bullet'larının arka plan rengi */
+}
+
+.certificateSwiper .swiper-pagination-bullet-active {
+  background: #ff0000; /* Aktif pagination bullet'ının arka plan rengi */
+}

@@ -1,0 +1,28 @@
+.video-thumbnail {
+  position: relative;
+}
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px; /* Butonun genişliği */
+  height: 60px; /* Butonun yüksekliği */
+  background-color: white; /* Arka plan rengi beyaz */
+  border-radius: 50%; /* Yuvarlak buton */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease; /* Gölge geçiş efekti */
+  box-shadow: 0px 4px 10px rgba(247, 245, 245, 0.3); /* Normal durumdaki gölge */
+}
+
+.play-button:hover {
+  box-shadow: 0px 8px 20px rgba(255, 255, 255, 0.6); /* Daha belirgin gölge */
+}
+
+.play-button img {
+  width: 70%; /* Görselin genişliği */
+  height: 70%; /* Görselin yüksekliği */
+}

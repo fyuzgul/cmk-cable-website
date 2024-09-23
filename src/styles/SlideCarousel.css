@@ -1,0 +1,147 @@
+.page-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-container {
+  position: relative;
+}
+
+.swiper-section {
+  position: relative;
+  flex: 1;
+  margin-top: 60px;
+}
+
+.mySwiper {
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-pagination {
+  bottom: 10px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffff;
+  z-index: 20;
+}
+
+.content-overlay {
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.card {
+  width: 250px;
+  height: 180px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4em;
+  color: #f8f8f8;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  border-radius: 40px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.7s ease-in-out;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  height: 40%;
+  width: 100%;
+  background-color: rgb(186, 28, 28, 0.8);
+  bottom: 12px;
+  right: 0;
+  transform: translateY(70px);
+  border-radius: 100%;
+  transition: all 0.7s ease-in-out;
+}
+
+.c-txt {
+  margin-top: 15%;
+  z-index: 2;
+}
+
+.card:hover::before {
+  transform: scale(7) translate(-20px);
+}
+
+.card:hover {
+  color: #f3f3f3;
+}
+
+.card img.overlay-img {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 20%;
+    height: 125px;
+    font-size: 1em;
+  }
+  .card img.overlay-img {
+    width: 25%;
+    height: 25%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: calc(50% - 20px);
+    height: 150px;
+    font-size: 0.8em;
+  }
+
+  .content {
+    gap: 10px;
+  }
+}
