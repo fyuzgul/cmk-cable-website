@@ -1,64 +1,10 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import productService from "../services/ProductsService";
-import categoriesService from "../services/CategoriesService";
-import productCertificatesService from "../services/ProductCertificatesService";
-import certificatesService from "../services/CertificatesService";
+import useFetchProductDetails from "../hooks/useFetchProductDetails";
 
 export default function ProductDetail() {
   const { categoryId, productId } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [certificates, setCertificates] = useState([]);
-
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        setLoading(true);
-
-        const [productData, categoriesData, productCertificates] =
-          await Promise.all([
-            productService.getProductById(productId),
-            categoriesService.getAllCategories(),
-            productCertificatesService.getCertificatesByProductId(productId),
-          ]);
-
-        console.log("Product Certificates Data:", productCertificates);
-
-        const certificateIds = productCertificates
-          .map((pc) => pc.certificatesId)
-          .filter((id) => id);
-
-        console.log("Filtered Certificate IDs:", certificateIds);
-
-        if (certificateIds.length > 0) {
-          const certificatesData = await Promise.all(
-            certificateIds.map((id) =>
-              certificatesService.getCertificateById(id)
-            )
-          );
-
-          console.log("Fetched Certificates Data:", certificatesData);
-
-          setCertificates(certificatesData);
-        } else {
-          console.log("No valid certificate IDs found.");
-        }
-
-        setProduct(productData);
-        setCategories(categoriesData);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to fetch product details or categories.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductDetails();
-  }, [categoryId, productId]);
+  const { product, loading, error, categories, certificates } =
+    useFetchProductDetails(productId);
 
   if (loading) {
     return <p>Loading...</p>;

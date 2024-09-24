@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import categoriesService from "../../services/CategoriesService";
 import {
   FileInput,
   SelectInput,
@@ -9,26 +7,10 @@ import {
 } from "../form-elements";
 import * as Yup from "yup";
 import ProductsService from "../../services/ProductsService";
+import useFetchAllCategories from "../../hooks/useFetchAllCategories";
 
 export default function AddProductForm() {
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await categoriesService.getAllCategories();
-        setCategories(data);
-      } catch (err) {
-        setError("Failed to fetch categories.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+  const { categories, loading, error } = useFetchAllCategories();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;

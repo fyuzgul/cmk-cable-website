@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { FileInput, TextInput } from "../form-elements";
 import * as Yup from "yup";
 import CategoriesService from "../../services/CategoriesService";
 import UpdateButton from "../buttons/UpdateButton";
+import useFetchCategoryById from "../../hooks/useFetchCategoryById";
 import DeleteButton from "../buttons/DeleteButton";
 
 export default function EditCategoryForm({ id }) {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [category, setCategory] = useState({ id: id, name: "", image: null });
-
   const handleDelete = async (categoryId) => {
     try {
       await CategoriesService.deleteCategory(categoryId);
@@ -21,23 +17,7 @@ export default function EditCategoryForm({ id }) {
     }
   };
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const data = await CategoriesService.getCategoryById(id);
-        setCategory({
-          id: data.id,
-          name: data.name,
-          image: data.image,
-        });
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchCategory();
-  }, [id]);
+  const { category, error, loading } = useFetchCategoryById(id);
 
   return (
     <div className="p-6">

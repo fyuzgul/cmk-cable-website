@@ -1,29 +1,12 @@
 import StandartsTableRow from "../../components/tables/standart-table/StandartsTableRow";
 import ListTemplate from "../../components/tables/ListTemplate";
-import standartService from "../../services/StandartsService";
-import { useState, useEffect } from "react";
+
 import ListHeader from "../../components/headers/ListHeader";
 import AddStanadrtForm from "../../components/forms/AddStandartForm";
+import useFetchAllStandarts from "../../hooks/useFetchAllStandarts";
 
 export default function StandartManagerContext() {
-  const [standarts, setStandarts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchStandarts = async () => {
-      try {
-        const standarts = await standartService.getAllStandards();
-        setStandarts(standarts);
-      } catch (err) {
-        setError("Failed to fetch certificates.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStandarts();
-  }, []);
-
+  const { standarts, loading, error } = useFetchAllStandarts();
   if (loading) {
     return <div>Loading...</div>;
   }

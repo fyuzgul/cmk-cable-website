@@ -1,32 +1,11 @@
-import CertificateTypesService from "../../services/CertificateTypesService";
-import { useState, useEffect } from "react";
 import ListTemplate from "../../components/tables/ListTemplate";
 import CertificateTypeTableRow from "../../components/tables/certificate-type-table/CertificateTypeTableRow";
 import AddCertificateTypeForm from "../../components/forms/AddCertificateTypeForm";
 import ListHeader from "../../components/headers/ListHeader";
+import useFetchAllCertificateTypes from "../../hooks/useFetchAllCertificateTypes";
 
 export default function CertificateTypeManagerContext() {
-  const [types, setTypes] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchTypes = async () => {
-      try {
-        setLoading(true);
-
-        const data = await CertificateTypesService.getAllCertificateTypes();
-        setTypes(data);
-      } catch (err) {
-        setError("Failed to fetch products or categories.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTypes();
-  }, []);
+  const { types, loading, error } = useFetchAllCertificateTypes();
 
   if (loading) {
     return <div>Loading...</div>;

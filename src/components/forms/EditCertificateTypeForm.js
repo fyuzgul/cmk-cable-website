@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { FileInput, TextInput } from "../form-elements";
 import * as Yup from "yup";
 import certificateTypeService from "../../services/CertificateTypesService";
-import CertificateTypesService from "../../services/CertificateTypesService";
+import useFetchCertificateTypeById from "../../hooks/useFetchCertificateTypeById";
 
 export default function EditCertificateTypeForm({ id }) {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [certificateType, setCertificateType] = useState({
-    id: id,
-    name: "",
-    image: null,
-  });
-
   const handleDelete = async (certificateTypeId) => {
     try {
       await certificateTypeService.deleteCertificateType(certificateTypeId);
@@ -23,24 +14,7 @@ export default function EditCertificateTypeForm({ id }) {
       alert("Kategori silinirken bir hata oluştu.");
     }
   };
-
-  useEffect(() => {
-    const fetchCertificateType = async () => {
-      try {
-        const data = await CertificateTypesService.getCertificateType(id);
-        setCertificateType({
-          id: data.id,
-          name: data.name,
-          image: data.image,
-        });
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchCertificateType();
-  }, [id]);
+  const { certificateType, loading, error } = useFetchCertificateTypeById(id);
 
   return (
     <div className="p-6">

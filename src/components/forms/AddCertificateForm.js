@@ -2,26 +2,13 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { FileInput, TextInput } from "../form-elements";
 import * as Yup from "yup";
-import { useState, useEffect } from "react";
-import certificateTypeService from "../../services/CertificateTypesService";
+import useFetchAllCertificateTypes from "../../hooks/useFetchAllCertificateTypes";
 import CertificatesService from "../../services/CertificatesService";
 import { SelectInput } from "../form-elements";
 import AddButton from "../buttons/AddButton";
 
 export default function AddCertificateForm() {
-  const [types, setTypes] = useState([]);
-  useEffect(() => {
-    const fetchTypes = async () => {
-      try {
-        const data = await certificateTypeService.getAllCertificateTypes();
-        setTypes(data);
-      } catch (err) {
-      } finally {
-      }
-    };
-
-    fetchTypes();
-  }, []);
+  const { types } = useFetchAllCertificateTypes();
   const validationSchema = Yup.object({
     name: Yup.string().required("Certificate Name is required"),
     typeId: Yup.string().required("Certificate Type is required"),

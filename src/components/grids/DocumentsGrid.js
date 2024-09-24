@@ -1,58 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Fuse from "fuse.js";
 import DocumentSidebar from "../sidebars/DocumentSidebar";
 import SearchBar from "../SearchBar";
 import DocumentCard from "../cards/DocumentCard";
-import certificatesService from "../../services/CertificatesService";
-import certificateTypeService from "../../services/CertificateTypesService";
 import Loader from "../Loader";
+import useFetchCertificatesAndTypes from "../../hooks/useFetchCertificatesAndTypes";
 
 const Documents = () => {
-  const [selectedDocument, setSelectedDocument] = useState("");
+  const [selectedDocument, setSelectedDocument] = useState("TSE-HAR");
   const [searchQuery, setSearchQuery] = useState("");
-  const [certificates, setCertificates] = useState({});
-  const [certificateTypes, setCertificateTypes] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCertificatesAndTypes = async () => {
-      try {
-        setLoading(true);
-
-        const [certificatesData, certificateTypesData] = await Promise.all([
-          certificatesService.getAllCertificates(),
-          certificateTypeService.getAllCertificateTypes(),
-        ]);
-
-        const certificateTypeMap = certificateTypesData.reduce((map, type) => {
-          map[type.id] = type.name;
-          return map;
-        }, {});
-
-        setCertificateTypes(certificateTypeMap);
-
-        const categorizedCertificates =
-          certificatesService.categorizeCertificatesByType(
-            certificatesData,
-            certificateTypeMap
-          );
-
-        setCertificates(categorizedCertificates);
-
-        const firstCategoryKey = Object.keys(categorizedCertificates)[0];
-        if (firstCategoryKey) {
-          setSelectedDocument(firstCategoryKey);
-        }
-      } catch (err) {
-        setError("Failed to fetch certificates or types.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCertificatesAndTypes();
-  }, []);
+  const { certificates, loading, error } = useFetchCertificatesAndTypes();
 
   if (loading) return <Loader />;
   if (error) return <div>{error}</div>;

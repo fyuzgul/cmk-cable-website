@@ -2,27 +2,10 @@ import ListHeader from "../../components/headers/ListHeader";
 import AddCertificateForm from "../../components/forms/AddCertificateForm";
 import ListTemplate from "../../components/tables/ListTemplate";
 import CertificateTableRow from "../../components/tables/certificate-table/CertificatesTableRow";
-import certificateService from "../../services/CertificatesService";
-import { useState, useEffect } from "react";
+import useFetchAllCertificates from "../../hooks/useFetchAllCertificates";
 
 export default function CertificateManagerContext() {
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCertificates = async () => {
-      try {
-        const certificates = await certificateService.getAllCertificates();
-        setCertificates(certificates);
-      } catch (err) {
-        setError("Failed to fetch certificates.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCertificates();
-  }, []);
+  const { certificates, loading, error } = useFetchAllCertificates();
 
   if (loading) {
     return <div>Loading...</div>;

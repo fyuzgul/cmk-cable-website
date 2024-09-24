@@ -1,56 +1,23 @@
-import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { FileInput, TextInput, SelectInput } from "../form-elements";
 import * as Yup from "yup";
 import CertificatesService from "../../services/CertificatesService";
-import CertificateTypesService from "../../services/CertificateTypesService";
 import { useNavigate } from "react-router-dom";
+import useFetchAllCertificateTypes from "../../hooks/useFetchAllCertificateTypes";
+import useFetchCertificateById from "../../hooks/useFetchCertifaceteById";
 
 export default function UpdateCertificateForm({ id }) {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [certificate, setCertificate] = useState(null);
-  const [types, setTypes] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchTypes = async () => {
-      try {
-        const data = await CertificateTypesService.getAllCertificateTypes();
-        setTypes(data);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-
-    const fetchCertificate = async () => {
-      try {
-        const certificateData = await CertificatesService.getCertificateById(
-          id
-        );
-        setCertificate({
-          id: certificateData.id,
-          name: certificateData.name,
-          typeId: certificateData.typeId || "",
-          image: certificateData.imageData || null,
-          imagePreview: certificateData.imageData
-            ? `data:image/jpeg;base64,${certificateData.imageData}`
-            : null,
-          fileContent: certificateData.fileContentData || null,
-          fileContentPreview: certificateData.fileContentData
-            ? `data:application/pdf;base64,${certificateData.fileContentData}`
-            : null,
-        });
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTypes();
-    fetchCertificate();
-  }, [id]);
+  const {
+    types,
+    loading: typesLoading,
+    error: typesError,
+  } = useFetchAllCertificateTypes();
+  const {
+    certificate,
+    loading: certificateLoading,
+    error: certificateError,
+  } = useFetchCertificateById(id);
 
   const handleFileChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
@@ -58,11 +25,10 @@ export default function UpdateCertificateForm({ id }) {
       setFieldValue(fieldName, file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setCertificate((prevCertificate) => ({
-          ...prevCertificate,
-          [fieldName === "image" ? "imagePreview" : "fileContentPreview"]:
-            reader.result,
-        }));
+        setFieldValue(
+          fieldName === "image" ? "imagePreview" : "fileContentPreview",
+          reader.result
+        );
       };
       reader.readAsDataURL(file);
     }
@@ -77,17 +43,16 @@ export default function UpdateCertificateForm({ id }) {
       alert("Sertifika silinirken bir hata oluştu.");
     }
   };
-
-  if (loading) {
+  if (typesLoading || certificateLoading) {
     return <p>Yükleniyor...</p>;
   }
 
-  if (error) {
-    return <p>Hata: {error}</p>;
+  if (typesError) {
+    return <p>Tipleri yüklerken hata oluştu: {typesError}</p>;
   }
 
-  if (!certificate) {
-    return <p>Sertifika bulunamadı.</p>;
+  if (certificateError) {
+    return <p>Sertifika yüklerken hata oluştu: {certificateError}</p>;
   }
 
   return (
@@ -100,7 +65,9 @@ export default function UpdateCertificateForm({ id }) {
           name: certificate.name || "",
           typeId: certificate.typeId || "",
           image: certificate.image || null,
+          imagePreview: certificate.imagePreview || null,
           fileContent: certificate.fileContent || null,
+          fileContentPreview: certificate.fileContentPreview || null,
         }}
         validationSchema={Yup.object({
           name: Yup.string().required("Sertifika adı gerekli"),
@@ -125,7 +92,7 @@ export default function UpdateCertificateForm({ id }) {
           }
         }}
       >
-        {({ setFieldValue }) => (
+        {({ setFieldValue, values }) => (
           <Form className="space-y-4">
             <TextInput name="name" placeholder="Sertifika Adı" />
             <SelectInput name="typeId">
@@ -142,11 +109,11 @@ export default function UpdateCertificateForm({ id }) {
                 name="image"
                 onChange={(e) => handleFileChange(e, setFieldValue, "image")}
               />
-              {certificate.imagePreview && (
+              {values.imagePreview && (
                 <div className="mt-4">
                   <p className="text-gray-600">Yüklü Resim:</p>
                   <img
-                    src={certificate.imagePreview}
+                    src={values.imagePreview}
                     alt="Sertifika Resim Önizlemesi"
                     className="w-64 h-64 object-cover mt-2 rounded-lg shadow-lg"
                   />
@@ -161,11 +128,11 @@ export default function UpdateCertificateForm({ id }) {
                   handleFileChange(e, setFieldValue, "fileContent")
                 }
               />
-              {certificate.fileContentPreview && (
+              {values.fileContentPreview && (
                 <div className="mt-4">
                   <p className="text-gray-600">Yüklü Dosya:</p>
                   <iframe
-                    src={certificate.fileContentPreview}
+                    src={values.fileContentPreview}
                     className="w-64 h-64 object-cover mt-2 rounded-lg shadow-lg"
                     title="Dosya Önizlemesi"
                   />

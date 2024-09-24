@@ -1,30 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import productService from "../../services/ProductsService";
+import useFetchProductByCategory from "../../hooks/useFetchProductByCategory";
 import ProductCard from "../cards/ProductCard";
 import Loader from "../Loader";
 
 export default function ProductsGrid() {
   const { categoryId } = useParams();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const data = await productService.getProductsByCategory(categoryId);
-        setProducts(data);
-      } catch (err) {
-        setError("Failed to fetch products.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [categoryId]);
+  const { products, loading, error } = useFetchProductByCategory(categoryId);
 
   return (
     <div className="mt-24">

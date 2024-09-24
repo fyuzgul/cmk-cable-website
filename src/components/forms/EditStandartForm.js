@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { TextInput } from "../form-elements";
 import * as Yup from "yup";
-import standartService from "../../services/StandartsService";
+import StandartsService from "../../services/StandartsService";
+import useFetchStandartById from "../../hooks/useFetchStandartById";
 
 export default function EditStandartForm({ id }) {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [standart, setStandart] = useState({ id: id, name: "" });
-
   const handleDelete = async (standartId) => {
     try {
-      await standartService.deleteStandards(standartId);
+      await StandartsService.deleteStandards(standartId);
       alert("Standart başarıyla silindi.");
       window.location.reload(true);
     } catch (err) {
@@ -19,22 +15,7 @@ export default function EditStandartForm({ id }) {
     }
   };
 
-  useEffect(() => {
-    const fetchStandart = async () => {
-      try {
-        const standartData = await standartService.getStandardById(id);
-        setStandart({
-          id: standartData.id,
-          name: standartData.name,
-        });
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchStandart();
-  }, [id]);
+  const { standart, loading, error } = useFetchStandartById(id);
 
   return (
     <div className="p-6">
@@ -55,7 +36,7 @@ export default function EditStandartForm({ id }) {
           })}
           onSubmit={async (values) => {
             try {
-              await standartService.updateStandards({
+              await StandartsService.updateStandards({
                 id: standart.id,
                 name: values.name,
               });
