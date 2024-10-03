@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import CertificateTypesService from "../../services/CertificateTypesService";
+import useFethcAllCertificateTypes from "../../hooks/useFetchAllCertificateTypes";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
@@ -7,18 +7,9 @@ import "../../styles/CertificatesSwiper.css";
 import { useTranslation } from "react-i18next";
 import { FreeMode, Pagination } from "swiper/modules";
 import { BigTitle } from "../titles";
-import { useEffect, useState } from "react";
 
 function CertificatesSection() {
-  const [certificates, setSertificates] = useState([]);
-  useEffect(() => {
-    CertificateTypesService.getAllCertificateTypes()
-      .then((data) => {
-        console.log("Data loaded:", data); // Veri yüklendiğinde konsola yazdır
-        setSertificates(data);
-      })
-      .catch((error) => console.error("Error loading products:", error));
-  }, []);
+  const { types } = useFethcAllCertificateTypes();
 
   const { t } = useTranslation();
   return (
@@ -55,11 +46,11 @@ function CertificatesSection() {
             },
           }}
         >
-          {certificates.map((certificate) => (
-            <SwiperSlide key={certificate.id}>
+          {types.map((type) => (
+            <SwiperSlide key={type.id}>
               <img
-                src={`data:image/png;base64,${certificate.imageData}`}
-                alt={certificate.name}
+                src={`data:image/png;base64,${type.imageData}`}
+                alt={type.name}
               />
             </SwiperSlide>
           ))}

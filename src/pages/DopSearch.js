@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import DocumentCard from "../components/cards/DocumentCard";
-import VideoThumbnail from "../components/sections/VideoThumbnail";
-import { BigTitle } from "../components/titles";
+import Header from "../components/sections/VideoThumbnail";
+import useFetchCertificatesAndTypes from "../hooks/useFetchCertificatesAndTypes";
+import img from "../assets/header-images/kategori.png";
 import {
   _3184A,
   _007_A03V2V2_F_Eca,
@@ -40,6 +41,7 @@ const processPDFs = async (pdfs, setTextContent) => {
 };
 
 const DopSearch = () => {
+  const { certificates } = useFetchCertificatesAndTypes();
   const [textContent, setTextContent] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredContent, setFilteredContent] = useState([]);
@@ -93,11 +95,7 @@ const DopSearch = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <VideoThumbnail />
-
-      <div className="flex justify-center items-center">
-        <BigTitle>DOP SEARCH</BigTitle>
-      </div>
+      <Header img={img} title="DOP SEARCH" />
 
       <div className="flex flex-col md:flex-row flex-1 pt-16 bg-gray-100">
         <div className="flex flex-col flex-1 p-6">

@@ -26,87 +26,98 @@ import CertificateManagerContext from "./admin/manager-pages-context/Certificate
 import CertificateTypeManagerContext from "./admin/manager-pages-context/CertificateTypeManagerContext";
 import ProductManagerContext from "./admin/manager-pages-context/ProductManagerContext";
 import AdminCertificateDetail from "./admin/AdminCertificateDetail";
+import { LoadingProvider, useLoading } from "./contexts/LoadingContext";
+import Loader from "./components/Loader";
 
 function App() {
   return (
-    <>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/corporate" element={<TabSection />}>
-              <Route path="about-us" element={<AboutUs />} />
-              <Route path="history" element={<History />} />
-              <Route path="iss" element={<Iss />} />
-              <Route path="pds" element={<Pds />} />
-            </Route>
-            <Route path="/admin">
-              <Route
-                path="product-manager"
-                element={
-                  <Manager>
-                    <ProductManagerContext />
-                  </Manager>
-                }
-              ></Route>
-              <Route
-                path="certificate-manager"
-                element={
-                  <Manager>
-                    <CertificateManagerContext />
-                  </Manager>
-                }
-              ></Route>
-              <Route
-                path="standart-manager"
-                element={
-                  <Manager>
-                    <StandartManagerContext />
-                  </Manager>
-                }
-              ></Route>
-              <Route
-                path="certificatetype-manager"
-                element={
-                  <Manager>
-                    <CertificateTypeManagerContext />
-                  </Manager>
-                }
-              ></Route>
-              <Route
-                path="category-manager"
-                element={
-                  <Manager>
-                    <CategoryManagerContext />
-                  </Manager>
-                }
-              ></Route>
-            </Route>
+    <LoadingProvider>
+      <MainApp />
+    </LoadingProvider>
+  );
+}
+
+function MainApp() {
+  const { loading } = useLoading();
+
+  return (
+    <div className="min-h-screen flex flex-col mt-28 ">
+      {loading && <Loader />}
+      <Navbar />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/corporate" element={<TabSection />}>
+            <Route path="about-us" element={<AboutUs />} />
+            <Route path="history" element={<History />} />
+            <Route path="iss" element={<Iss />} />
+            <Route path="pds" element={<Pds />} />
+          </Route>
+          <Route path="/admin">
             <Route
-              path="/admin/product-manager/:id"
-              element={<AdminProductDetail />}
+              path="product-manager"
+              element={
+                <Manager>
+                  <ProductManagerContext />
+                </Manager>
+              }
             />
             <Route
-              path="/admin/certificate-manager/:id"
-              element={<AdminCertificateDetail />}
+              path="certificate-manager"
+              element={
+                <Manager>
+                  <CertificateManagerContext />
+                </Manager>
+              }
             />
-            <Route path="/products" element={<Categories />} />
-            <Route path="/products/:categoryId" element={<Products />} />
             <Route
-              path="/products/:categoryId/:productId"
-              element={<ProductDetail />}
+              path="standart-manager"
+              element={
+                <Manager>
+                  <StandartManagerContext />
+                </Manager>
+              }
             />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="/dop-search" element={<DopSearch />} />
-            <Route path="/career" element={<Career />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/b2b" element={<B2b />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </>
+            <Route
+              path="certificatetype-manager"
+              element={
+                <Manager>
+                  <CertificateTypeManagerContext />
+                </Manager>
+              }
+            />
+            <Route
+              path="category-manager"
+              element={
+                <Manager>
+                  <CategoryManagerContext />
+                </Manager>
+              }
+            />
+          </Route>
+          <Route
+            path="/admin/product-manager/:id"
+            element={<AdminProductDetail />}
+          />
+          <Route
+            path="/admin/certificate-manager/:id"
+            element={<AdminCertificateDetail />}
+          />
+          <Route path="/products" element={<Categories />} />
+          <Route path="/products/:categoryId" element={<Products />} />
+          <Route
+            path="/products/:categoryId/:productId"
+            element={<ProductDetail />}
+          />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/dop-search" element={<DopSearch />} />
+          <Route path="/career" element={<Career />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/b2b" element={<B2b />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 }
 

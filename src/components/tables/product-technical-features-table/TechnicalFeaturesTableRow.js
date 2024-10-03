@@ -2,7 +2,6 @@ import technicalFeatureService from "../../../services/TechnicalFeaturesService"
 export default function TechnicalFeatureTableRow({
   features,
   editedFeatures,
-  setFeatures,
   setEditedFeatures,
 }) {
   const handleInputChange = (e, featureId, field) => {
@@ -20,9 +19,6 @@ export default function TechnicalFeatureTableRow({
     if (window.confirm("Bu kaydı silmek istediğinizden emin misiniz?")) {
       try {
         await technicalFeatureService.deleteTechnicalFeature(featureId);
-        setFeatures((prevFeatures) =>
-          prevFeatures.filter((feature) => feature.id !== featureId)
-        );
         alert("Silme başarılı!");
       } catch (error) {
         console.error(

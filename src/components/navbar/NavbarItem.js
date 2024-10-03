@@ -16,7 +16,7 @@ function NavbarItem({ text }) {
     [t("DopSearch")]: "/dop-search",
     [t("Career")]: "/career",
     [t("Contact")]: "/contact",
-    [t("B2B")]: "/b2b",
+    [t("B2B")]: "https://b2b.cmkkablo.com/login",
   };
 
   const to = routeMap[text] || "/";
@@ -24,7 +24,7 @@ function NavbarItem({ text }) {
   const dropdownItems = [t("AboutUs"), t("History"), t("ISS"), t("PDS")];
 
   return (
-    <li className="relative group">
+    <li className="relative group py-2">
       {text === t("Corporate") ? (
         <>
           <button className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 hover:text-red-700 md:hover:bg-transparent md:p-0 md:dark:hover:text-red-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 flex items-center">

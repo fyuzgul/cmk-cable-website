@@ -5,11 +5,7 @@ import ListHeader from "../../components/headers/ListHeader";
 import useFetchAllCertificateTypes from "../../hooks/useFetchAllCertificateTypes";
 
 export default function CertificateTypeManagerContext() {
-  const { types, loading, error } = useFetchAllCertificateTypes();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { types, error } = useFetchAllCertificateTypes();
 
   if (error) {
     return <div>{error}</div>;

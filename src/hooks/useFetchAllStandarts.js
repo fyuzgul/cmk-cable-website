@@ -1,9 +1,10 @@
 import StandartsService from "../services/StandartsService";
 import { useState, useEffect } from "react";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchAllStandarts = () => {
   const [standarts, setStandarts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { setLoading } = useLoading();
   const [error, setError] = useState(null);
   useEffect(() => {
     const fetchStandarts = async () => {
@@ -17,8 +18,8 @@ const useFetchAllStandarts = () => {
       }
     };
     fetchStandarts();
-  }, []);
-  return { standarts, loading, error };
+  }, [setLoading]);
+  return { standarts, error };
 };
 
 export default useFetchAllStandarts;

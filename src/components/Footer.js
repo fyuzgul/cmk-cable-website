@@ -6,6 +6,7 @@ import {
   FaTwitter,
   FaTwitch,
 } from "react-icons/fa";
+import { useLoading } from "../contexts/LoadingContext";
 
 const sections = [
   {
@@ -40,8 +41,14 @@ const items = [
 ];
 
 const Footer = () => {
+  const { loading } = useLoading();
+
+  if (loading) {
+    return null;
+  }
+
   return (
-    <footer className="w-full bg-gray-900 text-white py-10 mt-10">
+    <footer className="w-full bg-gray-900 text-white py-10 mt-0">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-8">
           <div className="col-span-full lg:col-span-2 lg:mb-0 border-b lg:border-b-0 lg:border-r border-gray-700 pb-8 lg:pb-0">

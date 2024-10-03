@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import StandartsService from "../services/StandartsService";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchStandartById = (id) => {
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
+
   const [error, setError] = useState(null);
   const [standart, setStandart] = useState({ id: id, name: "" });
 
@@ -17,12 +19,14 @@ const useFetchStandartById = (id) => {
         setLoading(false);
       } catch (err) {
         setError(err.message);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       }
     };
     fetchStandart();
-  }, [id]);
-  return { standart, loading, error };
+  }, [setLoading, id]);
+  return { standart, error };
 };
 
 export default useFetchStandartById;

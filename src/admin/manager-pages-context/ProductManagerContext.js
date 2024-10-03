@@ -5,11 +5,7 @@ import ListHeader from "../../components/headers/ListHeader";
 import useFetchProductsAndCategories from "../../hooks/useFetchProductsAndCategories";
 
 export default function ProductManagerContext() {
-  const { products, categories, loading, error } =
-    useFetchProductsAndCategories();
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { products, categories, error } = useFetchProductsAndCategories();
 
   if (error) {
     return <div>{error}</div>;

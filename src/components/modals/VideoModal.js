@@ -3,6 +3,7 @@ import ModalVideo from "react-modal-video";
 import "react-modal-video/scss/modal-video.scss";
 import "../../styles/VideoTh.css";
 import VideoThumbnail from "../sections/VideoThumbnail";
+import img from "../../assets/header-images/1597935830c1ba.jpg";
 import PlayButton from "../buttons/PlayButton";
 
 export class VideoModal extends Component {
@@ -28,7 +29,7 @@ export class VideoModal extends Component {
           videoId="uZMu-w-feLM"
           onClose={() => this.setState({ isOpen: false })}
         />
-        <VideoThumbnail>
+        <VideoThumbnail img={img}>
           <PlayButton onClick={this.openModal} />
         </VideoThumbnail>
       </div>

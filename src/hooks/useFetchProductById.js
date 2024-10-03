@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import ProductsService from "../services/ProductsService";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchProductById = (id) => {
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
   const [error, setError] = useState(null);
   const [product, setProduct] = useState({
     id: id,
@@ -33,15 +34,17 @@ const useFetchProductById = (id) => {
             ? `data:image/jpeg;base64,${productData.detailImageData}`
             : null,
         });
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       } catch (err) {
         setError(err.message);
         setLoading(false);
       }
     };
     fetchProduct();
-  }, [id]);
-  return { product, loading, error };
+  }, [setLoading, id]);
+  return { product, error };
 };
 
 export default useFetchProductById;

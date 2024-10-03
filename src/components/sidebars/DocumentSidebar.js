@@ -4,7 +4,7 @@ import MediumTitle from "../titles/MediumTitle";
 const DocumentSidebar = ({ documents, selectedDocument, onSelectDocument }) => {
   return (
     <div className="md:w-1/4 w-full bg-white shadow-md p-6">
-      <MediumTitle color="green">Documents</MediumTitle>
+      <MediumTitle color="primary">Documents</MediumTitle>
       <ul className="space-y-2">
         {Object.keys(documents).map((document) => (
           <li

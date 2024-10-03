@@ -6,21 +6,28 @@ import CmkCable from "../CmkCable";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import ReadMoreButton from "../buttons/ReadMoreButton";
+import { useLoading } from "../../contexts/LoadingContext";
 
 function AboutSection() {
   const { t } = useTranslation();
+  const { loading } = useLoading();
+
+  if (loading) {
+    return null;
+  }
+
   return (
-    <div class="min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
-      <div data-theme="teal" class="mx-auto max-w-6xl">
-        <h2 class="sr-only">Featured case study</h2>
-        <section class="font-sans text-black">
-          <div class="[ lg:flex lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
-            <div class="flex-shrink-0 self-stretch sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
-              <div class="h-full">
-                <article class="h-full">
-                  <div class="h-full">
+    <div className="min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
+      <div data-theme="teal" className="mx-auto max-w-6xl">
+        <h2 className="sr-only">Featured case study</h2>
+        <section className="text-black">
+          <div className="[ lg:flex lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
+            <div className="flex-shrink-0 self-stretch sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
+              <div className="h-full">
+                <article className="h-full">
+                  <div className="h-full">
                     <img
-                      class="h-full object-cover"
+                      className="h-full object-cover"
                       src={img}
                       width="733"
                       height="412"
@@ -31,8 +38,8 @@ function AboutSection() {
                 </article>
               </div>
             </div>
-            <div class="p-6 bg-gray-200">
-              <div class="leading-relaxed">
+            <div className="p-6 bg-gray-200">
+              <div className="leading-relaxed">
                 <SmallTitle color="gray">{t("AboutUs")}</SmallTitle>
                 <MediumTitle>
                   <CmkCable

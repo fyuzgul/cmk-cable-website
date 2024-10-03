@@ -7,16 +7,8 @@ import useFetchProductById from "../../hooks/useFetchProductById";
 import useFetchAllCategories from "../../hooks/useFetchAllCategories";
 
 export default function UpdateProductForm({ id }) {
-  const {
-    product,
-    loading: productLoading,
-    error: productError,
-  } = useFetchProductById(id);
-  const {
-    categories,
-    loading: categoriesLoading,
-    error: categoriesError,
-  } = useFetchAllCategories();
+  const { product, error: productError } = useFetchProductById(id);
+  const { categories, error: categoriesError } = useFetchAllCategories();
 
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
@@ -44,10 +36,6 @@ export default function UpdateProductForm({ id }) {
       alert("Failed to delete product.");
     }
   };
-
-  if (productLoading || categoriesLoading) {
-    return <p>Loading...</p>;
-  }
 
   if (productError || categoriesError) {
     return (

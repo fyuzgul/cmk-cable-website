@@ -104,9 +104,66 @@ export default function CareerForm() {
     ),
   });
 
-  const handleSubmit = (values) => {
-    console.log("Form Submitted", values);
+  const handleSubmit = async (values) => {
+    const formData = new FormData();
+
+    // Diğer alanlar
+    formData.append("fullName", values.fullName);
+    formData.append("telephoneNumber", values.telephoneNumber);
+    formData.append("email", values.email);
+    formData.append("gender", values.gender);
+    formData.append("maritalStatus", values.maritalStatus);
+    formData.append("militaryStatus", values.militaryStatus);
+    formData.append("driverLicense", values.driverLicense);
+    formData.append("travelAvailability", values.travelAvailability);
+
+    // Eğitim bilgileri
+    formData.append("university", "deneme");
+    formData.append("faculty", values.education.faculty);
+    formData.append("graduationDate", values.education.graduationDate);
+    formData.append("languages", values.education.languages);
+    formData.append("softwareSkills", values.education.softwareSkills);
+    formData.append("seminars", values.education.seminars);
+
+    // Deneyimler dizisini düzleştirerek gönderme
+    values.experiences.forEach((experience, index) => {
+      formData.append(`experiences[${index}].company`, experience.company);
+      formData.append(`experiences[${index}].duration`, experience.duration);
+      formData.append(`experiences[${index}].position`, experience.position);
+    });
+
+    // Diğer alanlar
+    formData.append("department", values.department);
+    formData.append("referenceSource", values.referenceSource);
+    formData.append("description", values.description);
+
+    // CV dosyasını ekleme
+    if (values.cv) {
+      formData.append("cv", values.cv);
+    }
+
+    formData.append("consent", values.consent);
+
+    try {
+      const response = await fetch(
+        "http://localhost:5972/api/CareerForms/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Başvuru gönderilemedi, lütfen tekrar deneyin.");
+      }
+
+      const result = await response.json();
+      console.log("Başvuru başarıyla gönderildi", result);
+    } catch (error) {
+      console.error("Hata oluştu:", error.message);
+    }
   };
+
   return (
     <div>
       {loading && <p>Yükleniyor...</p>}
@@ -162,10 +219,10 @@ export default function CareerForm() {
               <MediumTitle>Eğitim Bilgileri</MediumTitle>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <SelectInput name="education.school">
+                <SelectInput name="education.university">
                   <option value="">Üniversite Seçin</option>
-                  {universities.map((university, index) => (
-                    <option key={index} value={university}>
+                  {universities.map((university) => (
+                    <option key={university} value={university}>
                       {university}
                     </option>
                   ))}

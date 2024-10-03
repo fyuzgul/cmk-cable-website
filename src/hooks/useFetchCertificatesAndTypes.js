@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import CertificatesService from "../services/CertificatesService";
 import CertificateTypeService from "../services/CertificateTypesService";
+import { useLoading } from "../contexts/LoadingContext";
+import ProductsService from "../services/ProductsService";
 
 const useFetchCertificatesAndTypes = () => {
   const [certificates, setCertificates] = useState({});
   const [certificateTypes, setCertificateTypes] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { setLoading } = useLoading();
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCertificatesAndTypes = async () => {
       try {
-        setLoading(true);
-
         const [certificatesData, certificateTypesData] = await Promise.all([
           CertificatesService.getAllCertificates(),
           CertificateTypeService.getAllCertificateTypes(),
@@ -25,9 +25,27 @@ const useFetchCertificatesAndTypes = () => {
 
         setCertificateTypes(certificateTypeMap);
 
+        const certificatesWithProducts = await Promise.all(
+          certificatesData.map(async (certificate) => {
+            try {
+              const products = await ProductsService.getProductsByCertificate(
+                certificate.id
+              );
+
+              return { ...certificate, products };
+            } catch (error) {
+              console.error(
+                `Error fetching products for certificate ${certificate.id}:`,
+                error
+              );
+              return { ...certificate, products: [] };
+            }
+          })
+        );
+
         const categorizedCertificates =
           CertificatesService.categorizeCertificatesByType(
-            certificatesData,
+            certificatesWithProducts,
             certificateTypeMap
           );
 
@@ -41,9 +59,9 @@ const useFetchCertificatesAndTypes = () => {
     };
 
     fetchCertificatesAndTypes();
-  }, []);
+  }, [setLoading]);
 
-  return { certificates, certificateTypes, loading, error };
+  return { certificates, certificateTypes, error };
 };
 
 export default useFetchCertificatesAndTypes;

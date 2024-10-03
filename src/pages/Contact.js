@@ -14,8 +14,10 @@ import {
 import MailSVG from "../components/svgs/MailSVG";
 import TelephoneSVG from "../components/svgs/TelephoneSVG";
 import SendMessageButton from "../components/buttons/SendMessageButton";
+import useFetchAllContactInformations from "../hooks/useFetchAllContactInformations";
 
 export default function Contact() {
+  const { contactinformations } = useFetchAllContactInformations();
   const initialValues = {
     fullName: "",
     street: "",
@@ -43,19 +45,24 @@ export default function Contact() {
   const handleSubmit = (values) => {
     console.log("Form Submitted", values);
   };
+
   return (
-    <div className="pt-24 mb-24">
-      <div className="flex flex-wrap justify-center gap-6 mb-0">
-        <ContactCard phone="sdasdas" email="asdasd" fax="asdasda" />
-        <ContactCard phone="sdasdas" email="asdasd" fax="asdasda" />
-        <ContactCard phone="sdasdas" email="asdasd" fax="asdasda" />
-        <ContactCard phone="sdasdas" email="asdasd" fax="asdasda" />
-        <ContactCard phone="sdasdas" email="asdasd" fax="asdasda" />
+    <div className="pt-36 mb-16">
+      <div className="flex flex-wrap justify-center gap-6 mb-6">
+        {contactinformations.map((contactinformation) => (
+          <ContactCard
+            key={contactinformation.id}
+            phone={contactinformation.phoneNumber}
+            email={contactinformation.email}
+            fax={contactinformation.faxNumber}
+            department={contactinformation.department}
+          />
+        ))}
       </div>
       <div
         className="grid md:grid-cols-2 gap-16 items-center relative
       overflow-hidden p-8 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)]
-      rounded-3xl max-w-6xl mx-auto bg-white  font-[sans-serif]
+      rounded-3xl max-w-6xl mx-auto bg-white font-[sans-serif]
       before:absolute before:right-0 before:w-[300px] before:bg-gray-800
       before:h-full max-md:before:hidden"
       >

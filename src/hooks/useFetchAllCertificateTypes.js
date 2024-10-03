@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import CertificateTypesService from "../services/CertificateTypesService";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchAllCertificateTypes = () => {
   const [types, setTypes] = useState([]);
-
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -21,8 +21,8 @@ const useFetchAllCertificateTypes = () => {
     };
 
     fetchTypes();
-  }, []);
-  return { types, loading, error };
+  }, [setLoading]);
+  return { types, error };
 };
 
 export default useFetchAllCertificateTypes;

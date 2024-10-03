@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import ProductsService from "../services/ProductsService";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchProductByCategory = (categoryId) => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
+
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -15,13 +17,15 @@ const useFetchProductByCategory = (categoryId) => {
       } catch (err) {
         setError("Failed to fetch products.");
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
 
     fetchProducts();
-  }, [categoryId]);
-  return { products, loading, error };
+  }, [setLoading, categoryId]);
+  return { products, error };
 };
 
 export default useFetchProductByCategory;

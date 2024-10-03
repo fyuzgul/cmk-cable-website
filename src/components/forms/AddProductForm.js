@@ -10,9 +10,8 @@ import ProductsService from "../../services/ProductsService";
 import useFetchAllCategories from "../../hooks/useFetchAllCategories";
 
 export default function AddProductForm() {
-  const { categories, loading, error } = useFetchAllCategories();
+  const { categories, error } = useFetchAllCategories();
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   const validationSchema = Yup.object({

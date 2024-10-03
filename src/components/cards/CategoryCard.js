@@ -8,12 +8,13 @@ export default function CategoryCard({ category, products }) {
 
   const handleLearnMoreClick = () => {
     navigate(`/products/${category.id}`);
+    window.scrollTo(0, 0);
   };
 
   return (
     <>
       <div className="p-4 max-w-md">
-        <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+        <div className="h-full border-2 border-grayLight border-opacity-60 rounded-lg overflow-hidden">
           <img
             className="h-48 w-full object-cover object-center"
             src={`data:image/jpeg;base64,${category.imageData}`}

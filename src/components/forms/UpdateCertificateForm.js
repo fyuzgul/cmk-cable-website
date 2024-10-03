@@ -56,7 +56,7 @@ export default function UpdateCertificateForm({ id }) {
   }
 
   return (
-    <div className="w-full md:w-full bg-gray-100 p-4 rounded shadow-lg mt-24">
+    <div className="w-full md:w-full bg-gray-100 p-4 rounded shadow-lg ">
       <h1 className="text-lg font-bold mb-4">Sertifikayı Güncelle</h1>
 
       <Formik

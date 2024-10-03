@@ -5,11 +5,7 @@ import CertificateTableRow from "../../components/tables/certificate-table/Certi
 import useFetchAllCertificates from "../../hooks/useFetchAllCertificates";
 
 export default function CertificateManagerContext() {
-  const { certificates, loading, error } = useFetchAllCertificates();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { certificates, error } = useFetchAllCertificates();
 
   if (error) {
     return <div>{error}</div>;

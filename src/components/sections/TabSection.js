@@ -3,10 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import AboutUs from "../../pages/Corporate/AboutUs";
 import History from "../../pages/Corporate/History";
 import Pds from "../../pages/Corporate/Pds";
+import useFetchAllAboutUsItems from "../../hooks/useFetchAllAboutUsItems";
+import { useLoading } from "../../contexts/LoadingContext";
 
 const TabSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { items } = useFetchAllAboutUsItems();
+  const { loading } = useLoading();
 
   const tabMap = {
     "/corporate/about-us": "Hakkımızda",
@@ -21,7 +25,7 @@ const TabSection = () => {
     {
       name: "Hakkımızda",
       url: "/corporate/about-us",
-      content: <AboutUs />,
+      content: <AboutUs items={items} />,
     },
     {
       name: "Tarihçe",
@@ -49,34 +53,38 @@ const TabSection = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 mt-16">
-      <div className="flex flex-wrap justify-center space-x-2 mb-6">
-        {tabs.map((tab) => (
-          <button
-            key={tab.name}
-            onClick={() => handleTabChange(tab)}
-            className={`px-4 py-2 m-1 rounded ${
-              activeTab === tab.name
-                ? "bg-red-600 text-white"
-                : "bg-gray-600 text-white hover:bg-red-600"
-            } text-sm md:text-base`}
-          >
-            {tab.name}
-          </button>
-        ))}
-      </div>
+    <div className="p-4 md:p-8 mt-28">
+      {!loading && (
+        <>
+          <div className="flex flex-wrap justify-center space-x-2 mb-6">
+            {tabs.map((tab) => (
+              <button
+                key={tab.name}
+                onClick={() => handleTabChange(tab)}
+                className={`px-4 py-2 m-1 rounded ${
+                  activeTab === tab.name
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-600 text-white hover:bg-red-600"
+                } text-sm md:text-base`}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </div>
 
-      <div>
-        {tabs.map(
-          (tab) =>
-            activeTab === tab.name &&
-            tab.content && (
-              <div key={tab.name}>
-                <div>{tab.content}</div>
-              </div>
-            )
-        )}
-      </div>
+          <div>
+            {tabs.map(
+              (tab) =>
+                activeTab === tab.name &&
+                tab.content && (
+                  <div key={tab.name}>
+                    <div>{tab.content}</div>
+                  </div>
+                )
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

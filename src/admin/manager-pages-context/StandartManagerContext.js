@@ -6,10 +6,7 @@ import AddStanadrtForm from "../../components/forms/AddStandartForm";
 import useFetchAllStandarts from "../../hooks/useFetchAllStandarts";
 
 export default function StandartManagerContext() {
-  const { standarts, loading, error } = useFetchAllStandarts();
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { standarts, error } = useFetchAllStandarts();
 
   if (error) {
     return <div>{error}</div>;

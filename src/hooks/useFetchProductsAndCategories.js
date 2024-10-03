@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import ProductsService from "../services/ProductsService";
 import CategoriesService from "../services/CategoriesService";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchProductsAndCategories = () => {
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
@@ -26,13 +27,15 @@ const useFetchProductsAndCategories = () => {
       } catch (err) {
         setError("Failed to fetch products or categories.");
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       }
     };
 
     fetchProductsAndCategories();
-  }, []);
-  return { categories, products, loading, error };
+  }, [setLoading]);
+  return { categories, products, error };
 };
 
 export default useFetchProductsAndCategories;

@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
-
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
@@ -13,20 +11,10 @@ import { BigTitle } from "../titles";
 import CmkCable from "../CmkCable";
 import { useTranslation } from "react-i18next";
 import ShowAllButton from "../buttons/ShowAllButton";
-import ProductService from "../../services/ProductsService";
+import useFetchAllProducts from "../../hooks/useFetchAllProducts";
 
 export default function ProductsSwiper() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    ProductService.getAllProducts()
-      .then((data) => {
-        console.log("Data loaded:", data);
-        setProducts(data);
-      })
-      .catch((error) => console.error("Error loading products:", error));
-  }, []);
-
+  const { products } = useFetchAllProducts();
   const { t } = useTranslation();
 
   const swiperRef = useRef(null);

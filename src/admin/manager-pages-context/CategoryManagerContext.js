@@ -5,11 +5,7 @@ import CategoryTableRow from "../../components/tables/category-table/CategoryTab
 import ListHeader from "../../components/headers/ListHeader";
 
 export default function CategoryManagerContext() {
-  const { categories, loading, error } = useFetchCategories();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { categories, error } = useFetchCategories();
 
   if (error) {
     return <div>{error}</div>;

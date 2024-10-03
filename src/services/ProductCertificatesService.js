@@ -12,6 +12,16 @@ const getCertificatesByProductId = async (id) => {
   }
 };
 
+const getAllProducCertificates = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const deleteProductCertificate = async (id) => {
   try {
     const response = await axios.delete(`${API_BASE_URL}/delete/${id}`);
@@ -39,5 +49,6 @@ const ProductCertificatesService = {
   getCertificatesByProductId,
   deleteProductCertificate,
   createProductCertificate,
+  getAllProducCertificates,
 };
 export default ProductCertificatesService;

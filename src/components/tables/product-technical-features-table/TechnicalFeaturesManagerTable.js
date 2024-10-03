@@ -1,41 +1,22 @@
-import React, { useEffect, useState } from "react";
-import technicalFeatureService from "../../../services/TechnicalFeaturesService";
+import { useState } from "react";
 import TechnicalFeatureTableRow from "./TechnicalFeaturesTableRow";
 import CreateTechnicalFeature from "../../forms/CreateTechnicalFeature";
 import TechnicalFeaturesTableFooter from "./TechnicalFeaturesTableFooter";
+import useFetchProductFeatures from "../../../hooks/useFetchProductFeatures";
 
 const TechnicalFeaturesManagerTable = ({ id }) => {
-  const [features, setFeatures] = useState([]);
   const [editedFeatures, setEditedFeatures] = useState({});
   const [isAdding, setIsAdding] = useState(false);
+  const { features, loading, error } = useFetchProductFeatures(id);
 
-  useEffect(() => {
-    if (!id) {
-      console.error("Product ID is missing from URL.");
-      return;
-    }
-
-    const fetchFeatures = async () => {
-      try {
-        const data = await technicalFeatureService.getAllFeaturesByProductId(
-          id
-        );
-        console.log("Fetched features:", data);
-        setFeatures(data);
-      } catch (error) {
-        console.error(
-          "Error fetching technical features:",
-          error.response?.data || error.message
-        );
-      }
-    };
-
-    fetchFeatures();
-  }, [id]);
+  // Define setFeatures function to manage state
+  const [featuresList, setFeaturesList] = useState(features);
 
   return (
     <div className="p-4">
       <h2 className="text-xl font-semibold mb-4">Technical Features</h2>
+      {loading && <div>Loading features...</div>}
+      {error && <div className="text-red-600">Error: {error}</div>}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="bg-gray-100 text-gray-600">
@@ -52,26 +33,24 @@ const TechnicalFeaturesManagerTable = ({ id }) => {
             </tr>
           </thead>
           <TechnicalFeatureTableRow
-            features={features}
+            features={featuresList}
             editedFeatures={editedFeatures}
             setEditedFeatures={setEditedFeatures}
-            setFeatures={setFeatures}
           />
         </table>
       </div>
       <TechnicalFeaturesTableFooter
-        features={features}
+        features={featuresList}
         setIsAdding={setIsAdding}
         editedFeatures={editedFeatures}
         setEditedFeatures={setEditedFeatures}
-        setFeatures={setFeatures}
         id={id}
       />
       {isAdding && (
         <CreateTechnicalFeature
           setIsAdding={setIsAdding}
           id={id}
-          setFeatures={setFeatures}
+          setFeatures={setFeaturesList} // Pass the setFeatures function
         />
       )}
     </div>

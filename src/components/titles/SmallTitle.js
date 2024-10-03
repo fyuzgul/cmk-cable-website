@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 export default function SmallTitle({ children, color, role }) {
-  const titleClasses = classNames("text-lg md:text-xl font-bold  mb-4 z-10", {
+  const titleClasses = classNames("text-lg md:text-xl font-bold z-10", {
     relative: role === "OurValuesTitle",
     "text-gray-300": color === "gray",
     "text-white": color === "white",

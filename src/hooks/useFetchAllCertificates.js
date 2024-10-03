@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import CertificatesService from "../services/CertificatesService";
+import { useLoading } from "../contexts/LoadingContext";
 
 const useFetchAllCertificates = () => {
   const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { setLoading } = useLoading();
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,12 +15,14 @@ const useFetchAllCertificates = () => {
       } catch (err) {
         setError("Failed to fetch certificates.");
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       }
     };
     fetchCertificates();
-  }, []);
-  return { certificates, loading, error };
+  }, [setLoading]);
+  return { certificates, error };
 };
 
 export default useFetchAllCertificates;

@@ -1,73 +1,82 @@
 import { useParams, Link } from "react-router-dom";
-import useFetchProductDetails from "../hooks/useFetchProductDetails";
+import RightDirectionSVG from "../components/svgs/RightDirectionSVG";
+import ClientProductDetailTabSection from "../components/sections/ClientProductDetailTabSection";
+import useFetchAllCategories from "../hooks/useFetchAllCategories";
+import useFetchProductById from "../hooks/useFetchProductById";
+import useFetchCategoryById from "../hooks/useFetchCategoryById";
+import { useLoading } from "../contexts/LoadingContext";
+import img from "../assets/header-images/kategori.png";
+import Header from "../components/sections/VideoThumbnail";
+import { MediumTitle } from "../components/titles";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductDetail() {
   const { categoryId, productId } = useParams();
-  const { product, loading, error, categories, certificates } =
-    useFetchProductDetails(productId);
+  const { categories, error } = useFetchAllCategories();
+  const { product } = useFetchProductById(productId);
+  const { loading } = useLoading();
+  const { category } = useFetchCategoryById(categoryId);
+  const navigate = useNavigate();
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
+  const handleClick = (event) => {
+    window.scrollTo(0, 0);
+    navigate(`/products/${category.id}`);
+    event.preventDefault();
+  };
   if (error) {
-    return <p>{error}</p>;
-  }
-
-  if (!product) {
-    return <p>Product not found.</p>;
+    return <p className="text-center text-red-500">{error}</p>;
   }
 
   return (
-    <div className="mt-24">
-      <div className="max-w-screen-lg mx-auto p-8 grid grid-cols-4 gap-8">
-        <aside className="col-span-1 bg-gray-100 p-4 rounded-md">
-          <h2 className="text-lg font-bold mb-4">Categories</h2>
-          <ul>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <li key={category.id} className="mb-2">
-                  <Link
-                    to={`/products/${category.id}`}
-                    className={`text-blue-500 ${
-                      category.id === Number(categoryId) ? "font-bold" : ""
-                    }`}
+    <>
+      <Header img={img} title={category.name + " / " + product.type} />
+      <div className="mt-20 pb-20">
+        <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+          {!loading && (
+            <aside className="bg-white shadow-md p-6 rounded-md w-full md:w-72">
+              <ul className="space-y-2">
+                {categories.map((category) => (
+                  <li
+                    key={category.id}
+                    className={`border border-gray-300 rounded-md p-3 flex justify-between items-center transition-colors 
+            ${
+              category.id === Number(categoryId)
+                ? "bg-red-600 text-white font-bold"
+                : "bg-white text-black hover:bg-red-600 hover:text-white"
+            }`}
                   >
-                    {category.name}
-                  </Link>
-                </li>
-              ))
-            ) : (
-              <p>No categories available.</p>
-            )}
-          </ul>
-        </aside>
-
-        <section className="col-span-3">
-          <h1 className="text-2xl font-bold">{product.name}</h1>
-          {product.detailImageData && (
-            <img
-              src={`data:image/jpeg;base64,${product.detailImageData}`}
-              alt={product.name}
-              className="w-full h-auto object-cover mt-4"
-            />
+                    <Link
+                      onClick={handleClick}
+                      className="w-full h-full flex items-center justify-between"
+                    >
+                      {category.name}
+                      {category.id === Number(categoryId) && (
+                        <RightDirectionSVG />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </aside>
           )}
-          <p className="mt-4 text-lg">{product.type}</p>
-          <div className="mt-4">
-            <h2 className="text-xl font-bold">Certificates</h2>
-            {certificates.length > 0 ? (
-              certificates.map((certificate) => (
-                <div key={certificate.id} className="mb-2">
-                  <p>Certificate ID: {certificate.id}</p>
-                  <p>Certificate Name: {certificate.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>No certificates available for this product.</p>
+
+          <section className="md:col-span-3 md:pl-20">
+            {!loading && product.detailImage && (
+              <>
+                <MediumTitle>{product.type}</MediumTitle>
+
+                <img
+                  src={`data:image/jpeg;base64,${product.detailImage}`}
+                  alt={product.name}
+                  className="w-full h-auto object-cover mt-4 rounded-md shadow"
+                />
+              </>
             )}
-          </div>
-        </section>
+
+            <ClientProductDetailTabSection product={product} />
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
