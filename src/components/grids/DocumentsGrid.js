@@ -11,12 +11,12 @@ import Header from "../../components/sections/VideoThumbnail";
 const Documents = () => {
   const [selectedDocument, setSelectedDocument] = useState("BASEC");
   const [searchQuery, setSearchQuery] = useState("");
-  const { certificates, error } = useFetchCertificatesAndTypes();
+  const { certificatesCate, error } = useFetchCertificatesAndTypes();
   const { loading } = useLoading();
 
   if (error) return <div>{error}</div>;
 
-  const selectedCertificates = certificates[selectedDocument] || [];
+  const selectedCertificates = certificatesCate[selectedDocument] || [];
 
   const fuse = new Fuse(selectedCertificates, {
     keys: ["products.type"],
@@ -35,7 +35,7 @@ const Documents = () => {
         {!loading && (
           <div className="flex flex-col md:flex-row flex-1 bg-gray-100">
             <DocumentSidebar
-              documents={certificates}
+              documents={certificatesCate}
               selectedDocument={selectedDocument}
               onSelectDocument={setSelectedDocument}
             />

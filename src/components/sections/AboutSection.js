@@ -19,7 +19,6 @@ function AboutSection() {
   return (
     <div className="min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
       <div data-theme="teal" className="mx-auto max-w-6xl">
-        <h2 className="sr-only">Featured case study</h2>
         <section className="text-black">
           <div className="[ lg:flex lg:items-center ] [ fancy-corners fancy-corners--large fancy-corners--top-left fancy-corners--bottom-right ]">
             <div className="flex-shrink-0 self-stretch sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
@@ -40,13 +39,12 @@ function AboutSection() {
             </div>
             <div className="p-6 bg-gray-200">
               <div className="leading-relaxed">
-                <SmallTitle color="gray">{t("AboutUs")}</SmallTitle>
+                <SmallTitle>{t("AboutUs")}</SmallTitle>
                 <MediumTitle>
                   <CmkCable
                     brand={t("Brand")}
                     text={t("Cable")}
-                    brandColor="red"
-                    textColor="white"
+                    brandColor="primary"
                   />
                 </MediumTitle>
                 <CustomPTag>{t("AboutUsText1")}</CustomPTag>
@@ -56,7 +54,7 @@ function AboutSection() {
                   className="flex justify-end mt-4"
                   to={"/corporate/about-us"}
                 >
-                  <ReadMoreButton />
+                  <ReadMoreButton onClick={() => window.scrollTo(0, 0)} />
                 </NavLink>
               </div>
             </div>

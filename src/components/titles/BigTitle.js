@@ -7,6 +7,7 @@ export default function BigTitle({ children, color }) {
       "text-red-500": color === "red",
       "text-blue-500": color === "blue",
       "text-green-500": color === "green",
+      "text-white": color === "white",
     }
   );
 

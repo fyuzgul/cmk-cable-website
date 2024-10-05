@@ -8,7 +8,6 @@ import { useLoading } from "../contexts/LoadingContext";
 import img from "../assets/header-images/kategori.png";
 import Header from "../components/sections/VideoThumbnail";
 import { MediumTitle } from "../components/titles";
-import { useNavigate } from "react-router-dom";
 
 export default function ProductDetail() {
   const { categoryId, productId } = useParams();
@@ -16,13 +15,6 @@ export default function ProductDetail() {
   const { product } = useFetchProductById(productId);
   const { loading } = useLoading();
   const { category } = useFetchCategoryById(categoryId);
-  const navigate = useNavigate();
-
-  const handleClick = (event) => {
-    window.scrollTo(0, 0);
-    navigate(`/products/${category.id}`);
-    event.preventDefault();
-  };
   if (error) {
     return <p className="text-center text-red-500">{error}</p>;
   }
@@ -46,7 +38,8 @@ export default function ProductDetail() {
             }`}
                   >
                     <Link
-                      onClick={handleClick}
+                      to={`/products/${category.id}`}
+                      onClick={window.scrollTo(0, 0)}
                       className="w-full h-full flex items-center justify-between"
                     >
                       {category.name}

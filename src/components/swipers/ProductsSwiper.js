@@ -51,6 +51,12 @@ export default function ProductsSwiper() {
 
       <Swiper
         effect={"coverflow"}
+        breakpoints={{
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 30,
+          },
+        }}
         loop={true}
         grabCursor={true}
         centeredSlides={true}

@@ -9,16 +9,16 @@ const HistorySection = ({ activeYear, content }) => {
   }
 
   return (
-    <div className="flex max-w-4xl mx-auto mt-12">
-      {currentContent.image && ( // Görselin varlığını kontrol et
+    <div className="flex flex-col md:flex-row max-w-4xl mx-auto mt-12">
+      {currentContent.image && (
         <img
           src={currentContent.image}
           alt={activeYear}
-          className="w-1/2 h-auto object-cover"
+          className="w-full md:w-1/2 h-auto object-cover"
         />
       )}
 
-      <div className="p-8 w-1/2">
+      <div className="p-8 w-full md:w-1/2">
         <h3 className="text-3xl font-bold mb-4">{activeYear}</h3>
         <h4 className="text-xl text-red-600 font-semibold mb-2">
           {currentContent.title}

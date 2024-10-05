@@ -5,7 +5,8 @@ import { useLoading } from "../contexts/LoadingContext";
 import ProductsService from "../services/ProductsService";
 
 const useFetchCertificatesAndTypes = () => {
-  const [certificates, setCertificates] = useState({});
+  const [certificatesCate, setCertificatesCate] = useState({});
+  const [certificates, setCertificate] = useState([]);
   const [certificateTypes, setCertificateTypes] = useState({});
   const { setLoading } = useLoading();
   const [error, setError] = useState(null);
@@ -49,7 +50,10 @@ const useFetchCertificatesAndTypes = () => {
             certificateTypeMap
           );
 
-        setCertificates(categorizedCertificates);
+        setCertificate(certificatesWithProducts);
+
+        setCertificatesCate(categorizedCertificates);
+        console.log(categorizedCertificates);
       } catch (err) {
         console.error("Error fetching certificates or types:", err);
         setError("Failed to fetch certificates or types.");
@@ -61,7 +65,7 @@ const useFetchCertificatesAndTypes = () => {
     fetchCertificatesAndTypes();
   }, [setLoading]);
 
-  return { certificates, certificateTypes, error };
+  return { certificatesCate, certificates, certificateTypes, error };
 };
 
 export default useFetchCertificatesAndTypes;

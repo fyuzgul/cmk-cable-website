@@ -10,7 +10,6 @@ const useFetchAllCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        setLoading(true);
         const data = await CategoriesService.getAllCategories();
         setCategories(data);
       } catch (err) {

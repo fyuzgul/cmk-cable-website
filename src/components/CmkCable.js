@@ -3,7 +3,9 @@ import classNames from "classnames";
 export default function CmkCable({ brandColor, brand, textColor, text }) {
   return (
     <>
-      <span className={classNames({ "text-red-900": brandColor === "red" })}>
+      <span
+        className={classNames({ "text-primary": brandColor === "primary" })}
+      >
         {brand}
       </span>{" "}
       <span
@@ -12,6 +14,7 @@ export default function CmkCable({ brandColor, brand, textColor, text }) {
           "text-white": textColor === "white",
           "text-red-900": textColor === "red",
           "text-gray-700": textColor === "gray",
+          "text-primary": textColor === "primary",
         })}
       >
         {text}

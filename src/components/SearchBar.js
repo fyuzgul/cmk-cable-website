@@ -1,6 +1,11 @@
 import React from "react";
+import { useLoading } from "../contexts/LoadingContext";
 
 const SearchBar = ({ searchQuery, onSearchChange }) => {
+  const { loading } = useLoading();
+  if (loading) {
+    return null;
+  }
   return (
     <div className="mb-3 w-full sm:w-96 mx-auto">
       <div className="relative mb-4 flex w-full flex-wrap items-stretch">

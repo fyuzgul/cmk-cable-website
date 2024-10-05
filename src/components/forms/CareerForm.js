@@ -286,6 +286,7 @@ export default function CareerForm() {
                       </div>
                     ))}
                     <AddButton
+                      type="button"
                       onClick={() =>
                         push({ company: "", duration: "", position: "" })
                       }

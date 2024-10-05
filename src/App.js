@@ -41,7 +41,7 @@ function MainApp() {
   const { loading } = useLoading();
 
   return (
-    <div className="min-h-screen flex flex-col mt-28 ">
+    <div className="min-h-screen flex flex-col mt-28">
       {loading && <Loader />}
       <Navbar />
       <main className="flex-grow">

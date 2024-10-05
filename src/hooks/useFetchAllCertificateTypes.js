@@ -10,7 +10,6 @@ const useFetchAllCertificateTypes = () => {
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        setLoading(true);
         const data = await CertificateTypesService.getAllCertificateTypes();
         setTypes(data);
       } catch (err) {

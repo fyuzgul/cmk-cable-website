@@ -5,9 +5,8 @@ import useFetchAllHistoryItems from "../../hooks/useFetchAllHistoryItems";
 
 const History = () => {
   const { historyItems } = useFetchAllHistoryItems();
-  const [activeYear, setActiveYear] = useState(2006); // default olarak string olarak ayarlıyoruz
+  const [activeYear, setActiveYear] = useState(2006);
 
-  // Dinamik olarak içerik oluşturuluyor
   const content = historyItems.reduce((acc, item) => {
     acc[item.year] = {
       title: item.title,

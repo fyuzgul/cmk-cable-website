@@ -7,6 +7,7 @@ export default function SmallTitle({ children, color, role }) {
     "text-white": color === "white",
     "text-green-500": color === "green",
     "text-red-500": color === "red",
+    "text-primary": color === "primary",
   });
 
   return (

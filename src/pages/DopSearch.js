@@ -4,33 +4,41 @@ import DocumentCard from "../components/cards/DocumentCard";
 import Header from "../components/sections/VideoThumbnail";
 import useFetchCertificatesAndTypes from "../hooks/useFetchCertificatesAndTypes";
 import img from "../assets/header-images/kategori.png";
-import {
-  _3184A,
-  _007_A03V2V2_F_Eca,
-  _005_6181Y_Eca,
-  _003H03VVH2_F_Eca,
-} from "../assets/certificates";
 import SearchBar from "../components/SearchBar";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
+const base64ToArrayBuffer = (base64) => {
+  const binaryString = window.atob(base64);
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
+};
+
 const processPDFs = async (pdfs, setTextContent) => {
   try {
     const results = await Promise.all(
-      pdfs.map(async ({ pdfurl, name, image }) => {
-        const response = await fetch(pdfurl);
-        const arrayBuffer = await response.arrayBuffer();
-        const pdfDoc = await pdfjsLib.getDocument(arrayBuffer).promise;
+      pdfs.map(async (certificate) => {
+        const { fileContentData } = certificate;
+        const arrayBuffer = base64ToArrayBuffer(fileContentData);
+        const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer })
+          .promise;
         let fullText = "";
 
         for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
           const page = await pdfDoc.getPage(pageNum);
           const textContent = await page.getTextContent();
-          const pageText = textContent.items.map((item) => item.str).join("");
+          const pageText = textContent.items.map((item) => item.str).join(" ");
           fullText += pageText + "\n";
         }
 
-        return { name, text: fullText, image };
+        return {
+          ...certificate,
+          text: fullText,
+        };
       })
     );
 
@@ -41,51 +49,29 @@ const processPDFs = async (pdfs, setTextContent) => {
 };
 
 const DopSearch = () => {
-  const { certificates } = useFetchCertificatesAndTypes();
   const [textContent, setTextContent] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredContent, setFilteredContent] = useState([]);
+  const { certificates } = useFetchCertificatesAndTypes();
 
-  const pdfs = [
-    {
-      pdfurl: _3184A,
-      name: "318XA (-40°C )",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
-    },
-    {
-      pdfurl: _007_A03V2V2_F_Eca,
-      name: "_007_A03V2V2_F_Eca",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
-    },
-    {
-      pdfurl: _003H03VVH2_F_Eca,
-      name: "_003H03VVH2_F_Eca",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
-    },
-    {
-      pdfurl: _005_6181Y_Eca,
-      name: "_005_6181Y_Eca",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
-    },
-  ];
+  const pdfs = certificates.map((certificate) => {
+    return {
+      ...certificate,
+    };
+  });
 
   useEffect(() => {
     processPDFs(pdfs, setTextContent);
-  }, []);
+  }, [certificates]);
 
   useEffect(() => {
-    // Sadece arama sorgusu boş olmadığında sonuçları filtreleyin
     if (searchQuery.trim() !== "") {
       const filtered = textContent.filter((item) =>
         item.text.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredContent(filtered);
     } else {
-      setFilteredContent([]); // Sorgu boşsa sonuçları temizle
+      setFilteredContent([]);
     }
   }, [searchQuery, textContent]);
 
@@ -107,7 +93,7 @@ const DopSearch = () => {
           <div className="flex flex-wrap justify-center gap-6 p-6 w-full">
             {filteredContent.length > 0
               ? filteredContent.map((item) => (
-                  <DocumentCard key={item.name} member={item} />
+                  <DocumentCard key={item.name} certificate={item} />
                 ))
               : searchQuery.trim() !== "" && <p>No results found.</p>}
           </div>
